@@ -1,108 +1,50 @@
-import React, { useState } from "react";
-import DashboardGraph from "./DashboardGraph";
+import React from 'react';
 
+// Define a type for our customer data
 interface Customer {
-  key: number;
+  id: number;
   name: string;
   email: string;
-  phone: string;
-  status: string;
+  status: 'Active' | 'Inactive';
 }
 
 // Dummy customer data
-const dummyData: Customer[] = [
-  { key: 1, name: "John Doe", email: "john@example.com", phone: "(123) 456-7890", status: "Active" },
-  { key: 2, name: "Jane Smith", email: "jane@example.com", phone: "(098) 765-4321", status: "Inactive" },
-  { key: 3, name: "Sam Johnson", email: "sam@example.com", phone: "(111) 222-3333", status: "Active" },
+const dummyCustomers: Customer[] = [
+  { id: 1, name: 'John Doe', email: 'john@example.com', status: 'Active' },
+  { id: 2, name: 'Jane Smith', email: 'jane@example.com', status: 'Inactive' },
+  { id: 3, name: 'Alex Johnson', email: 'alex@example.com', status: 'Active' },
 ];
 
 const CustomerDashboard: React.FC = () => {
-  const [isSheetOpen, setIsSheetOpen] = useState(false);
-
-  const openSheet = () => setIsSheetOpen(true);
-  const closeSheet = () => setIsSheetOpen(false);
-
   return (
-    <div>
-      {/* Button to open the side sheet */}
-      <div className="flex justify-end mb-4">
-        <button
-          onClick={openSheet}
-          className="px-4 py-2 bg-primary text-white rounded-md hover:bg-green-600 transition"
-        >
-          Open Details
-        </button>
-      </div>
-
-      {/* Summary Cards */}
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
-        <div className="bg-card p-4 rounded-lg shadow">
-          <h3 className="text-white text-lg mb-2">Total Customers</h3>
-          <p className="text-primary text-2xl">{dummyData.length}</p>
-        </div>
-        <div className="bg-card p-4 rounded-lg shadow">
-          <h3 className="text-white text-lg mb-2">Active Customers</h3>
-          <p className="text-primary text-2xl">
-            {dummyData.filter((c) => c.status === "Active").length}
-          </p>
-        </div>
-        <div className="bg-card p-4 rounded-lg shadow">
-          <h3 className="text-white text-lg mb-2">Inactive Customers</h3>
-          <p className="text-primary text-2xl">
-            {dummyData.filter((c) => c.status === "Inactive").length}
-          </p>
-        </div>
-      </div>
-
-      {/* Customer Table */}
-      <div className="overflow-x-auto">
-        <table className="min-w-full bg-card rounded-lg">
-          <thead>
-            <tr>
-              <th className="px-4 py-2 text-left text-white">Name</th>
-              <th className="px-4 py-2 text-left text-white">Email</th>
-              <th className="px-4 py-2 text-left text-white">Phone</th>
-              <th className="px-4 py-2 text-left text-white">Status</th>
-            </tr>
-          </thead>
-          <tbody>
-            {dummyData.map((customer) => (
-              <tr key={customer.key} className="border-t border-gray-700">
-                <td className="px-4 py-2 text-primary font-semibold">{customer.name}</td>
-                <td className="px-4 py-2 text-white">{customer.email}</td>
-                <td className="px-4 py-2 text-white">{customer.phone}</td>
-                <td className="px-4 py-2 text-white">{customer.status}</td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
-      </div>
-
-      {/* Sheet (Drawer) for additional details */}
-      {isSheetOpen && (
-        <div
-          className="fixed inset-0 z-50 flex justify-end"
-          onClick={closeSheet}
-        >
+    // Container with dark background; 'dark' class ensures Tailwind applies dark mode rules.
+    <div className="min-h-screen bg-gray-900 text-gray-100 p-8">
+      {/* Header with the primary green colour */}
+      <h1 className="text-4xl font-bold mb-8" style={{ color: '#10B981' }}>
+        Customer Dashboard
+      </h1>
+      
+      {/* Dashboard grid for customer cards */}
+      <div className="grid gap-4 sm:grid-cols-2 md:grid-cols-3">
+        {dummyCustomers.map((customer) => (
           <div
-            className="w-full max-w-md bg-background h-full shadow-xl p-6 relative"
-            onClick={(e) => e.stopPropagation()} // Prevent closing when clicking inside the sheet
+            key={customer.id}
+            className="p-4 bg-gray-800 rounded-md shadow-md transition hover:shadow-lg"
           >
-            <div className="flex justify-between items-center mb-4">
-              <h2 className="text-xl font-bold text-white">Customer Details Graph</h2>
-              <button
-                onClick={closeSheet}
-                className="text-white text-2xl leading-none focus:outline-none"
-              >
-                &times;
-              </button>
-            </div>
-            <DashboardGraph />
+            <h2 className="text-2xl font-semibold">{customer.name}</h2>
+            <p className="text-sm text-gray-400">{customer.email}</p>
+            <span
+              className={`inline-block mt-2 px-2 py-1 text-sm font-medium rounded ${
+                customer.status === 'Active'
+                  ? 'bg-green-600 text-white'
+                  : 'bg-red-600 text-white'
+              }`}
+            >
+              {customer.status}
+            </span>
           </div>
-          {/* Overlay */}
-          <div className="absolute inset-0 bg-black opacity-50"></div>
-        </div>
-      )}
+        ))}
+      </div>
     </div>
   );
 };

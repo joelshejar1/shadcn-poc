@@ -1,20 +1,20 @@
 /** @type {import('tailwindcss').Config} */
 module.exports = {
-    darkMode: 'class', // Use class-based dark mode
+    darkMode: 'class', // Enable dark mode via toggling a "dark" class
     content: [
       "./index.html",
-      "./src/**/*.{js,jsx,ts,tsx}",
+      "./src/**/*.{js,ts,jsx,tsx}",
     ],
     theme: {
       extend: {
         colors: {
-          primary: "#52c41a",    // Custom green primary color
-          background: "#141414", // Dark background color
-          header: "#1b1b1b",     // Header background
-          card: "#1f1f1f",       // Card background color
+          primary: {
+            DEFAULT: '#10B981', // emerald-500 (green)
+            dark: '#047857',    // emerald-700 (darker green)
+          },
         },
       },
     },
     plugins: [],
-  };
+  }
   
